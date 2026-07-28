@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Typeow — typing speed test</title>
+<meta name="description" content="Typeow: a typing speed test. Customize your time, pick a difficulty, and see how fast you really type." />
+
+
+<link rel="icon" type="image/png" href="images/typeowLogo.png" />
+<link rel="apple-touch-icon" href="images/typeowLogo.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="css/style.css?v=20260726b" />
+</head>
+<body>
+
+<div class="dash">
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="logo focus-hide">Typeow<span class="logo-dot">.</span></div>
+    <div class="topbar-actions">
+      <div class="topbar-hint focus-hide" id="topbarHint">start typing to begin</div>
+      <button class="gear-btn focus-hide" type="button" id="settingsBtn" title="Settings" aria-label="Open settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="panel">
+
+    <section class="controls focus-hide" id="controls">
+      <div class="control-group" id="difficultyGroup" role="group" aria-label="Difficulty">
+        <span class="control-label">difficulty</span>
+        <button class="pill" type="button" data-difficulty="easy">easy</button>
+        <button class="pill active" type="button" data-difficulty="medium">medium</button>
+        <button class="pill" type="button" data-difficulty="hard">hard</button>
+      </div>
+
+      <div class="control-divider" aria-hidden="true"></div>
+
+      <div class="control-group" id="durationGroup" role="group" aria-label="Duration">
+        <span class="control-label">time</span>
+        <button class="pill" type="button" data-duration="15">15s</button>
+        <button class="pill" type="button" data-duration="30">30s</button>
+        <button class="pill active" type="button" data-duration="60">60s</button>
+        <button class="pill" type="button" data-duration="120">120s</button>
+        <button class="pill pill-custom" type="button" id="customDurationBtn">custom</button>
+        <input
+          type="number"
+          id="customDurationInput"
+          class="custom-duration-input hidden"
+          min="5"
+          max="600"
+          placeholder="sec"
+          aria-label="Custom duration in seconds"
+        />
+      </div>
+
+      <div class="control-divider" aria-hidden="true"></div>
+
+      <div class="control-group" id="layoutGroup" role="group" aria-label="Layout">
+        <span class="control-label">layout</span>
+        <button class="pill active" type="button" data-layout="scroll">scroll</button>
+        <button class="pill" type="button" data-layout="rows">classic</button>
+      </div>
+
+      <div class="control-divider" aria-hidden="true"></div>
+
+      <div class="control-group" id="focusGroup" role="group" aria-label="Focus mode">
+        <span class="control-label">focus</span>
+        <button class="pill active" type="button" data-focus="off">off</button>
+        <button class="pill" type="button" data-focus="on">on</button>
+      </div>
+    </section>
+
+    <section class="test-stage" id="testStage">
+      <div class="stage-readout">
+        <div class="readout-item">
+          <span class="readout-value" id="timerValue">60</span>
+          <span class="readout-label">seconds</span>
+        </div>
+        <div class="readout-item readout-wpm">
+          <span class="readout-value" id="liveWpmValue">0</span>
+          <span class="readout-label">wpm</span>
+        </div>
+        <div class="readout-item">
+          <span class="readout-value" id="pbValue">—</span>
+          <span class="readout-label">your best</span>
+        </div>
+      </div>
+
+      <div class="stage-canvas" id="stageCanvas">
+        <div class="word-viewport" id="wordViewport">
+          <div class="word-row" id="wordRow"></div>
+          <div class="fade-right" aria-hidden="true"></div>
+        </div>
+
+        <div class="word-viewport-rows" id="wordViewportRows" hidden>
+          <div class="rows-inner" id="rowsInner"></div>
+        </div>
+
+        <div class="stage-pause" id="stagePause">paused — click to resume</div>
+      </div>
+
+      <input
+        type="text"
+        id="hiddenInput"
+        class="hidden-input"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        aria-label="Typing input"
+      />
+
+      <div class="stage-footer focus-hide">
+        <button class="ghost-btn" type="button" id="restartBtn" title="Restart test">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 4v6h-6" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          restart
+        </button>
+      </div>
+    </section>
+
+    <section class="results" id="resultsPanel" hidden>
+      <div class="gauge-wrap">
+        <svg id="gaugeSvg" viewBox="0 0 240 190" class="gauge" aria-hidden="true"></svg>
+        <div class="gauge-value">
+          <span id="resultWpm">0</span>
+          <span class="gauge-unit">wpm</span>
+        </div>
+      </div>
+
+      <div class="result-stats">
+        <div class="stat-tile stat-tile-accent">
+          <span class="stat-value" id="resultPersonalBest">—</span>
+          <span class="stat-label-pb">personal best</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value" id="resultAccuracy">0%</span>
+          <span class="stat-label">accuracy</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value" id="resultRawWpm">0</span>
+          <span class="stat-label">raw wpm</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value" id="resultWords">0 / 0</span>
+          <span class="stat-label">words correct / missed</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-value" id="resultChars">0 / 0</span>
+          <span class="stat-label">chars correct / wrong</span>
+        </div>
+      </div>
+
+      <div class="pb-badge" id="resultPbBadge" hidden>new personal best</div>
+      <div class="result-compare" id="resultCompare"></div>
+
+      <button class="primary-btn" type="button" id="tryAgainBtn">try again</button>
+    </section>
+
+  </main>
+
+</div>
+
+<!-- Settings modal -->
+<div class="modal-overlay" id="settingsOverlay" hidden>
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-title">settings</span>
+      <button class="modal-close" type="button" id="settingsCloseBtn" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">volume</div>
+      <div class="volume-row">
+        <span class="volume-label">music</span>
+        <input type="range" class="volume-slider" id="musicVolumeSlider" min="0" max="100" step="1" />
+        <span class="volume-value" id="musicVolumeValue">100%</span>
+      </div>
+      <div class="volume-row">
+        <span class="volume-label">typing</span>
+        <input type="range" class="volume-slider" id="typingVolumeSlider" min="0" max="100" step="1" />
+        <span class="volume-value" id="typingVolumeValue">100%</span>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">background music</div>
+      <div class="track-picker" id="musicTrackPicker">
+        <button class="track-btn" type="button" data-music="random">random</button>
+        <button class="track-btn" type="button" data-music="music1">track 1</button>
+        <button class="track-btn" type="button" data-music="music2">track 2</button>
+        <button class="track-btn" type="button" data-music="music3">track 3</button>
+        <button class="track-btn" type="button" data-music="music4">track 4</button>
+        <button class="track-btn" type="button" data-music="music5">track 5</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">typing sound</div>
+      <div class="track-picker" id="typingSoundPicker">
+        <button class="track-btn" type="button" data-typing="typing1">sound 1</button>
+        <button class="track-btn" type="button" data-typing="typing2">sound 2</button>
+        <button class="track-btn" type="button" data-typing="typing3">sound 3</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-section-title">your best scores</div>
+      <div class="pb-table-wrap">
+        <table class="pb-table" id="pbTable">
+          <thead>
+            <tr>
+              <th>difficulty</th>
+              <th>time</th>
+              <th>your best</th>
+            </tr>
+          </thead>
+          <tbody id="pbTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data/words-easy.js?v=20260726b"></script>
+<script src="data/words-medium.js?v=20260726b"></script>
+<script src="data/words-hard.js?v=20260726b"></script>
+<script src="js/wordManager.js?v=20260726b"></script>
+<script src="js/timer.js?v=20260726b"></script>
+<script src="js/stats.js?v=20260726b"></script>
+<script src="js/gauge.js?v=20260726b"></script>
+<script src="js/ui.js?v=20260726b"></script>
+<script src="js/uiRows.js?v=20260726b"></script>
+<script src="js/audio.js?v=20260726b"></script>
+<script src="js/scores.js?v=20260726b"></script>
+<script src="js/settings.js?v=20260726b"></script>
+<script src="js/app.js?v=20260726b"></script>
+</body>
+</html>
