@@ -1,6 +1,6 @@
 # [Typeow](https://lelouc01101000.github.io/Typeow/) 
 
-Typeow is a zero dependency, pure client side web application designed for real time typing speed and accuracy measurement. The application is built using standard ES6 JavaScript modules formatted as Immediately Invoked Function Expressions (IIFEs), CSS3 custom properties, and an event driven DOM interface.
+Typeow is a client side web application designed for real time typing speed and accuracy measurement. The application is built using standard ES6 JavaScript modules formatted as Immediately Invoked Function Expressions (IIFEs), CSS3 custom properties, and an event driven DOM interface.
 
 Available at: https://lelouc01101000.github.io/Typeow/
 
